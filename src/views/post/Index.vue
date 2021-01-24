@@ -30,7 +30,12 @@
                       class="btn btn-sm btn-primary mr-1"
                       >EDIT</router-link
                     >
-                    <button class="btn btn-sm btn-danger ml-1">DELETE</button>
+                    <button
+                      @click.prevent="postDelete(post.id)"
+                      class="btn btn-sm btn-danger ml-1"
+                    >
+                      DELETE
+                    </button>
                   </td>
                 </tr>
               </tbody>
@@ -65,9 +70,24 @@ export default {
         });
     });
 
+    //method delete
+    function postDelete(id) {
+      //delete data post by ID
+      axios
+        .delete(`http://localhost:8000/api/posts/${id}`)
+        .then(() => {
+          //splice posts
+          posts.value.splice(posts.value.indexOf(id), 1);
+        })
+        .catch((error) => {
+          console.log(error.response.data);
+        });
+    }
+
     //return
     return {
       posts,
+      postDelete,
     };
   },
 };
